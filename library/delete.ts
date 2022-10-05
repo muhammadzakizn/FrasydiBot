@@ -4,10 +4,17 @@ export default {
     keys : /delete|hapus/i,
     
     functions: async (sock:WASocket, {currentChats, name, messages,quoted }:datas) => {
-
+       
         if(quoted?.quotedMessage != null) {
-           
-            await sock.sendMessage(currentChats, {delete:quoted})
+            const message = {
+                key: {
+                    remoteJid: currentChats, 
+                    id: quoted.stanzaId,
+                    participant:quoted.participant
+                }
+                
+            }
+            await sock.sendMessage(currentChats, {delete:message.key})
         }
     }
 }

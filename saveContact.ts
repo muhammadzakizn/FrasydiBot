@@ -6,7 +6,7 @@ async function saveContact(contactName:string, id :string) {
     
     contact[id] = contactName
 
-    fs.writeFileSync("contact.json",JSON.stringify(contact))
+    fs.writeFileSync("contact.json",JSON.stringify(contact,null, 2))
     console.log(contact)
 }
 async function saveGrup(grupid:string) {
@@ -17,7 +17,7 @@ async function saveGrup(grupid:string) {
     if(find == -1) {
         grup.push(grupid)
     }
-    fs.writeFileSync("grup.json", JSON.stringify(grup))
+    fs.writeFileSync("grup.json", JSON.stringify(grup, null, 2))
 }
 
 

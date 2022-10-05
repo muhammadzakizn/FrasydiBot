@@ -12,21 +12,15 @@ export default {
         if(!isAdmin) {
             return await sock.sendMessage(currentChats, {text: "Command ini hanya bisa digunakan oleh admin"})
         }
-        const newtextArr = textArr.map(el => el.trim().split("@").join("")+"@s.whatsapp.net")
-        console.log(newtextArr)
-      
-       
-
-
-        if(textArr[0] != null) {
+        if(quoted?.mentionedJid != null) {
             try {
                 await sock.groupParticipantsUpdate(
-                    currentChats, newtextArr , "promote"
+                    currentChats, quoted.mentionedJid , "promote"
                 )
-                await sock.sendMessage(currentChats, {text: "Berhasil promosi "+textArr.join(", "), mentions: newtextArr})
+                await sock.sendMessage(currentChats, {text: "Berhasil promosi "+quoted.mentionedJid.map(el => "@"+el.split("@").at(0)).join(", "), mentions: quoted.mentionedJid})
             }catch(err) {
                 console.log(err)
-                await sock.sendMessage(currentChats, {text: "Gagal promosi "+textArr.join(", "), mentions : newtextArr})
+                await sock.sendMessage(currentChats, {text: "Gagal promosi "+quoted.mentionedJid.map(el => "@"+el.split("@").at(0)).join(", "), mentions: quoted.mentionedJid})
             }
             return
         } else if(quoted?.quotedMessage != null) {

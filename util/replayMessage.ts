@@ -16,21 +16,26 @@ export interface datas {
 
 
 async function replayMessage(messages:WAMessage, sock:WASocket) {
-    console.log(messages)
-    console.log(messages.message?.extendedTextMessage?.contextInfo)
+    console.log("\x1b[33m%s\x1b[0m",JSON.stringify(messages, null, 2))
+  
     const rawPesan = messages.message?.conversation || messages.message?.extendedTextMessage?.text
-    const pesan:Array<string> = rawPesan?.trim().split(" ") || [""] 
+    const pesan:Array<string> = []
+    rawPesan?.trim().split(" ").forEach(el => {
+        if(el.trim().length != 0 ) {
+            pesan.push(el)
+        }
+    })
     const isGroup = !(messages.key.participant == null)
     let isAdmin = false
     if(isGroup) {
         const gb = await sock.groupMetadata(messages.key.remoteJid||"")
         const participant = gb.participants
-        console.log(participant)
         isAdmin = (participant.findIndex(el => {
-            console.log(el.id)
-           return el.id == messages.key.participant && (el.isSuperAdmin || el.isAdmin)
+           
+            return el.id == messages.key.participant && el.admin != null
         })) > -1
     }
+    console.log(isAdmin)
     const data = {
         currentChats:messages.key.remoteJid,
         name : messages.pushName,
@@ -41,7 +46,7 @@ async function replayMessage(messages:WAMessage, sock:WASocket) {
         isGroup : isGroup,
         isAdmin : isAdmin
     }
-    console.log(pesan)
+   
     const library = lib.findIndex((el:any) => {
         try {
             return pesan[0].match(el.keys)
