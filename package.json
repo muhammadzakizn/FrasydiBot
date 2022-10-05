@@ -1,0 +1,22 @@
+{
+  "name": "whatsappbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index",
+  "scripts": {
+    "start": "ts-node ./index",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@adiwajshing/baileys": "^4.4.0",
+    "@adiwajshing/keyed-db": "github:adiwajshing/keyed-db",
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
+    "qrcode-terminal": "^0.12.0",
+    "ts-node": "^10.9.1"
+  }
+}
