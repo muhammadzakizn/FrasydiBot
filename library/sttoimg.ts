@@ -1,6 +1,7 @@
 import { datas } from '../util/replayMessage';
 import { WASocket, downloadMediaMessage } from '@adiwajshing/baileys';
 import * as fs from "fs";
+import {exec} from "child_process"
 import path from "path"
 export default {
     keys : /stimage/i,
@@ -20,8 +21,10 @@ export default {
                 }
             }
             const buf:any = await downloadMediaMessage(message, "buffer", {})
+            
             const name = message.key.id+"."+quoted.quotedMessage.stickerMessage.mimetype?.split("/").at(1)
             fs.writeFileSync(path.join(__dirname,"../image",name||""), buf)
+            
             
             await sock.sendMessage(currentChats, 
                 {

@@ -15,6 +15,7 @@ export default {
                 
             }
             await sock.sendMessage(currentChats, {delete:message.key})
+            await sock.sendMessage(currentChats, {text:"Berhasil Hapus"})
         }
     }
 }

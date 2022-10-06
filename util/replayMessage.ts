@@ -12,6 +12,8 @@ export interface datas {
     quoted: proto.IContextInfo,
     isGroup:boolean,
     isAdmin : boolean
+    anggotaGroup : Array<string>
+
 }
 
 
@@ -26,12 +28,15 @@ async function replayMessage(messages:WAMessage, sock:WASocket) {
         }
     })
     const isGroup = !(messages.key.participant == null)
+    let group:Array<string> = []
     let isAdmin = false
     if(isGroup) {
         const gb = await sock.groupMetadata(messages.key.remoteJid||"")
         const participant = gb.participants
+        participant.forEach((el:any) => {
+            group.push(el.id)
+        })
         isAdmin = (participant.findIndex(el => {
-           
             return el.id == messages.key.participant && el.admin != null
         })) > -1
     }
@@ -44,7 +49,9 @@ async function replayMessage(messages:WAMessage, sock:WASocket) {
         messages :messages,
         quoted : messages.message?.extendedTextMessage?.contextInfo,
         isGroup : isGroup,
-        isAdmin : isAdmin
+        isAdmin : isAdmin,
+        anggotaGroup : group
+
     }
    
     const library = lib.findIndex((el:any) => {
